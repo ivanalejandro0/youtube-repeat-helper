@@ -10,13 +10,18 @@ declare module "youtube-iframe" {
     getCurrentTime: () => number;
     addEventListener: (event: string, listener: (event:any) => void) => void;
     removeEventListener: (event: string, listener: (event:any) => void) => void;
+    loadVideoById: ({ videoId: string }) => void;
+    cueVideoById: ({ videoId: string }) => void;
+    playerInfo?: { videoData?: {video_id?: string } };
   };
 
   type YTPlayerConfig = {
     height: string;
     width: string;
-    videoId: string;
-    events: {
+    videoId?: string;
+    origin?: string;
+    host?: string;
+    events?: {
       onReady?: (event: any) => void;
       onStateChange?: (event: { data: YTPlayerStates }) => void;
       onPlaybackRateChange?: (event: { data: number }) => void;
@@ -24,12 +29,12 @@ declare module "youtube-iframe" {
   };
 
   enum YTPlayerStates {
-    // UNSTARTED = -1,  // not a part of the api
-    ENDED = 1,
-    PLAYING = 2,
-    PAUSED = 3,
-    BUFFERING = 4,
-    CUED = 5
+    UNSTARTED = -1,  // not a part of the api
+    ENDED = 0,
+    PLAYING = 1,
+    PAUSED = 2,
+    BUFFERING = 3,
+    CUED = 5,
   }
 
   export type YouTube = {
