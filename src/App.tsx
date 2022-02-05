@@ -1,5 +1,6 @@
+import { useSearchParams } from "react-router-dom";
 import { UserForm, Configuration } from './UserForm';
-import { useSearchParams } from './use-search-params';
+// import { useSearchParams } from './use-search-params';
 import { YoutubeHelper } from './YoutubeHelper';
 
 function App() {
@@ -7,9 +8,9 @@ function App() {
 
   function handleSubmit({ yid, start, stop }: Configuration) {
     setSearchParams({
-      yid,
-      start,
-      stop,
+      yid: yid || "",
+      start: start || "",
+      stop: stop || "",
     });
   }
 
@@ -25,7 +26,7 @@ function App() {
         {...{ yid, start, stop }}
         onSubmit={handleSubmit}
       />
-      { yid && start && stop
+      { yid
         ? (
         <YoutubeHelper
           key={yid}
@@ -36,7 +37,8 @@ function App() {
 
       <br />
       <a href={`${window.location.origin}/?yid=TDJsjhufD9c&start=5.1&stop=6.8`}>tennis serve</a>
-
+      <br />
+      <a href={`${window.location.origin}/?yid=I9fraQLy5uA&start=24&stop=28`}>guitar solo</a>
     </>
   );
 }

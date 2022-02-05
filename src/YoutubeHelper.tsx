@@ -26,6 +26,7 @@ interface YoutubeHelperProps {
 export function YoutubeHelper({ yid, start, stop }: YoutubeHelperProps) {
   const [player, setPlayer] = useState<YTPlayer | undefined>();
   const [playbackRate, setPlaybackRate] = useState<number>(1)
+  const [paused, setPaused] = useState<string | undefined>()
 
   useEffect(function onMount() {
     async function setupYT() {
@@ -53,14 +54,14 @@ export function YoutubeHelper({ yid, start, stop }: YoutubeHelperProps) {
     }
 
     if (event.data === YTPlayerStates.PAUSED) {
-      console.log("time:", player?.getCurrentTime());
+      if (!player) return;
+      const pausedTime = player.getCurrentTime().toFixed(3);
+      setPaused(pausedTime);
       return
     }
 
     if (event.data === YTPlayerStates.CUED) {
-      if (start) {
-        player?.seekTo(start);
-      }
+      restartVideoSection();
     }
   }, [player, start, stop, playbackRate, restartVideoSection]);
 
@@ -103,6 +104,9 @@ export function YoutubeHelper({ yid, start, stop }: YoutubeHelperProps) {
 
   console.log("[render] YoutubeHelper", { yid, start, stop });
   return (
-    <div id="youtube-iframe-container"></div>
+    <>
+      <div id="youtube-iframe-container"></div>
+      { paused && <div>Last paused at: {paused}</div> }
+    </>
   );
 }

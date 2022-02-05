@@ -1,9 +1,9 @@
 import React from 'react';
 
 export interface Configuration {
-  yid: string | null;
-  start: number | null;
-  stop: number | null;
+  yid?: string;
+  start?: string;
+  stop?: string;
 }
 
 function parseFormData(event: React.FormEvent<HTMLFormElement>): Configuration {
@@ -16,8 +16,8 @@ function parseFormData(event: React.FormEvent<HTMLFormElement>): Configuration {
 
   const formData = {
     yid: formElements.yid.value,
-    start: Number(formElements.start.value),
-    stop: Number(formElements.stop.value),
+    start: formElements.start.value,
+    stop: formElements.stop.value,
   }
 
   return formData;
