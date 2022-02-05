@@ -23,6 +23,11 @@ function App() {
   return (
     <>
       <h2>Load your video, configure your section to repeat</h2>
+      <p>
+        Where do you get the video id?<br />
+        Example youtube url (video id in red):<br />
+        https://www.youtube.com/watch?v=<span style={{color: "red"}}>TDJsjhufD9cl</span>
+      </p>
       <UserForm
         {...{ yid, start, stop }}
         onSubmit={handleSubmit}
