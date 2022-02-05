@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import YouTubeIframeLoader from "youtube-iframe";
 import { YTPlayer } from "youtube-iframe";
 import { setupYoutube } from "./Youtube";
-import { wait2 } from "./rate-delay-adjust";
+import { getWaitTimeForRate } from "./rate-delay-adjust";
 
 enum YTPlayerStates {
   UNSTARTED = -1,
@@ -47,7 +47,7 @@ export function YoutubeHelper({ yid, start, stop }: YoutubeHelperProps) {
     const end = Math.max(start, player.getCurrentTime());
     const duration = stop - end;
     clearTimeout(tid);
-    tid = setTimeout(restartVideoSection, wait2(duration, playbackRate) * 1000);
+    tid = setTimeout(restartVideoSection, getWaitTimeForRate(duration, playbackRate) * 1000);
   }, [player, start, stop, restartVideoSection, playbackRate])
 
   const onPlayerStateChange = React.useCallback(function onPlayerStateChange(event: {
