@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import YouTubeIframeLoader from "youtube-iframe";
 import { YTPlayer } from "youtube-iframe";
-import { setupYoutube } from "./Youtube";
+import { setupYoutube } from "./youtube-player";
 import { getWaitTimeForRate } from "./rate-delay-adjust";
 
 enum YTPlayerStates {
@@ -53,7 +53,6 @@ export function YoutubeHelper({ yid, start, stop }: YoutubeHelperProps) {
   const onPlayerStateChange = React.useCallback(function onPlayerStateChange(event: {
     data: YouTubeIframeLoader.YTPlayerStates;
   }) {
-    // console.log("onPlayerStateChange", event.data);
     if (event.data === YTPlayerStates.PLAYING) {
       scheduleRestart();
       return
@@ -100,7 +99,6 @@ export function YoutubeHelper({ yid, start, stop }: YoutubeHelperProps) {
   }, [start, stop, restartVideoSection])
 
   useEffect(function handleVideoChange() {
-    console.log("handleVideoChange");
     if (!player || !yid) return;
     player.cueVideoById({videoId: yid});
   }, [player, yid, start])
