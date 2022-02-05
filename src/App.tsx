@@ -13,10 +13,20 @@ function App() {
       stop: stop || "",
     });
   }
+  
+  function handlePlaybackRateChange(rate: number) {
+    setSearchParams({
+      v: searchParams.get("v") || "",
+      start: searchParams.get("start") || "",
+      stop: searchParams.get("stop") || "",
+      rate: rate.toString(),
+    })
+  }
 
   const yid = searchParams.get("v");
   const start = searchParams.get("start");
   const stop = searchParams.get("stop");
+  const playbackRate = searchParams.get("rate");
 
   console.log("[render] App", { yid, start, stop });
 
@@ -37,13 +47,19 @@ function App() {
         ? (
         <YoutubeHelper
           key={yid}
-          {...{yid, start: Number(start), stop: Number(stop)}}
+          {...{
+            yid,
+            start: Number(start),
+            stop: Number(stop),
+            rate: Number(playbackRate),
+            onRateChange: handlePlaybackRateChange,
+          }}
         />)
         : <div>No video</div>
       }
 
       <h2>Examples</h2>
-      <a href={`${window.location.origin}/?v=TDJsjhufD9c&start=5.1&stop=6.8`}>tennis serve</a>
+      <a href={`${window.location.origin}/?v=TDJsjhufD9c&start=5.1&stop=6.8&rate=0.5`}>tennis serve</a>
       <br />
       <a href={`${window.location.origin}/?v=I9fraQLy5uA&start=25.6&stop=27.6`}>guitar solo</a>
     </>

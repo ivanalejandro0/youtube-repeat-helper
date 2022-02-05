@@ -21,17 +21,23 @@ interface YoutubeHelperProps {
   yid: string;
   start: number | null;
   stop: number | null;
+  rate: number | null;
+  onRateChange?: (rate: number) => void;
 }
 
-export function YoutubeHelper({ yid, start, stop }: YoutubeHelperProps) {
+export function YoutubeHelper({ yid, start, stop, rate, onRateChange }: YoutubeHelperProps) {
   const [player, setPlayer] = useState<YTPlayer | undefined>();
   const [playbackRate, setPlaybackRate] = useState<number>(1)
   const [paused, setPaused] = useState<string | undefined>()
 
   useEffect(function onMount() {
     async function setupYT() {
-      const yt = await setupYoutube();
-      setPlayer(yt)
+      const player = await setupYoutube();
+      setPlayer(player)
+
+      // load video
+      player.cueVideoById({videoId: yid});
+      if (rate) player.setPlaybackRate(rate);
     }
     setupYT();
   }, [])
@@ -67,30 +73,31 @@ export function YoutubeHelper({ yid, start, stop }: YoutubeHelperProps) {
     }
 
     if (event.data === YTPlayerStates.CUED) {
+      if (!player) return;
       restartVideoSection();
+      if (rate) player.setPlaybackRate(rate);
     }
-  }, [restartVideoSection, player, scheduleRestart]);
+  }, [restartVideoSection, player, scheduleRestart, rate]);
 
   const onPlaybackRateChange = React.useCallback(function onPlaybackRateChange(event: { data: number }) {
     const playbackRate = event.data;
-    setPlaybackRate(playbackRate)
+    onRateChange?.(playbackRate);
+    setPlaybackRate(playbackRate);
     restartVideoSection();
     scheduleRestart();
-  }, [restartVideoSection, scheduleRestart]);
+  }, [restartVideoSection, scheduleRestart, onRateChange]);
 
   useEffect(function handleEvents() {
-    const yt = player;
-    if (!yt) return;
-    // yt.addEventListener("onReady", onPlayerReady);
-    yt.addEventListener("onStateChange", onPlayerStateChange);
-    yt.addEventListener("onPlaybackRateChange", onPlaybackRateChange);
+    if (!player) return;
+    // player.addEventListener("onReady", onPlayerReady);
+    player.addEventListener("onStateChange", onPlayerStateChange);
+    player.addEventListener("onPlaybackRateChange", onPlaybackRateChange);
 
     return function removeListeners() {
-      const yt = player;
-      if (!yt) return;
-      // yt.removeEventListener("onReady", onPlayerReady);
-      yt.removeEventListener("onStateChange", onPlayerStateChange);
-      yt.removeEventListener("onPlaybackRateChange", onPlaybackRateChange);
+      if (!player) return;
+      // player.removeEventListener("onReady", onPlayerReady);
+      player.removeEventListener("onStateChange", onPlayerStateChange);
+      player.removeEventListener("onPlaybackRateChange", onPlaybackRateChange);
     }
   }, [player, onPlayerStateChange, onPlaybackRateChange]);
 
@@ -98,12 +105,18 @@ export function YoutubeHelper({ yid, start, stop }: YoutubeHelperProps) {
     restartVideoSection();
   }, [start, stop, restartVideoSection])
 
-  useEffect(function handleVideoChange() {
-    if (!player || !yid) return;
-    player.cueVideoById({videoId: yid});
-  }, [player, yid, start])
+  // useEffect(function handleVideoChange() {
+  //   if (!player || !yid) return;
+  //   player.cueVideoById({videoId: yid});
+  //   if (rate) player.setPlaybackRate(rate);
+  // }, [player, yid, rate])
 
-  console.log("[render] YoutubeHelper", { yid, start, stop });
+  useEffect(function handleRateChange() {
+    if (!player || !rate) return;
+    player.setPlaybackRate(rate);
+  }, [player, rate])
+
+  console.log("[render] YoutubeHelper", { yid, start, stop, rate });
   return (
     <>
       <div id="youtube-iframe-container"></div>
