@@ -16,8 +16,8 @@ declare module "youtube-iframe" {
   };
 
   type YTPlayerConfig = {
-    height: string;
-    width: string;
+    height?: string;
+    width?: string;
     videoId?: string;
     origin?: string;
     host?: string;

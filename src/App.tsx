@@ -22,10 +22,12 @@ function App() {
 
   return (
     <>
+      <h2>Load your video, configure your section to repeat</h2>
       <UserForm
         {...{ yid, start, stop }}
         onSubmit={handleSubmit}
       />
+      <br />
       { yid
         ? (
         <YoutubeHelper
@@ -35,7 +37,7 @@ function App() {
         : <div>No video</div>
       }
 
-      <br />
+      <h2>Examples</h2>
       <a href={`${window.location.origin}/?yid=TDJsjhufD9c&start=5.1&stop=6.8`}>tennis serve</a>
       <br />
       <a href={`${window.location.origin}/?yid=I9fraQLy5uA&start=24&stop=28`}>guitar solo</a>

@@ -41,20 +41,27 @@ export function YoutubeHelper({ yid, start, stop }: YoutubeHelperProps) {
     player?.seekTo(start);
   }, [player, start])
 
+
+  const scheduleRestart = React.useCallback(() => {
+    if (!player || !stop || ! start) return;
+    const end = Math.max(start, player.getCurrentTime());
+    const duration = stop - end;
+    clearTimeout(tid);
+    tid = setTimeout(restartVideoSection, wait2(duration, playbackRate) * 1000);
+  }, [player, start, stop, restartVideoSection, playbackRate])
+
   const onPlayerStateChange = React.useCallback(function onPlayerStateChange(event: {
     data: YouTubeIframeLoader.YTPlayerStates;
   }) {
     // console.log("onPlayerStateChange", event.data);
     if (event.data === YTPlayerStates.PLAYING) {
-      if (!stop || ! start) return;
-      const duration = stop - start;
-      clearTimeout(tid);
-      tid = setTimeout(restartVideoSection, wait2(duration, playbackRate) * 1000);
+      scheduleRestart();
       return
     }
 
     if (event.data === YTPlayerStates.PAUSED) {
       if (!player) return;
+      clearTimeout(tid);
       const pausedTime = player.getCurrentTime().toFixed(3);
       setPaused(pausedTime);
       return
@@ -63,18 +70,14 @@ export function YoutubeHelper({ yid, start, stop }: YoutubeHelperProps) {
     if (event.data === YTPlayerStates.CUED) {
       restartVideoSection();
     }
-  }, [player, start, stop, playbackRate, restartVideoSection]);
+  }, [restartVideoSection, player, scheduleRestart]);
 
   const onPlaybackRateChange = React.useCallback(function onPlaybackRateChange(event: { data: number }) {
     const playbackRate = event.data;
     setPlaybackRate(playbackRate)
-
-    if (!stop || ! start) return;
-    const duration = stop - start;
-    clearTimeout(tid);
     restartVideoSection();
-    tid = setTimeout(restartVideoSection, wait2(duration, playbackRate) * 1000);
-  }, [start, stop, restartVideoSection]);
+    scheduleRestart();
+  }, [restartVideoSection, scheduleRestart]);
 
   useEffect(function handleEvents() {
     const yt = player;
