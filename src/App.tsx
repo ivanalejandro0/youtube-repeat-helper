@@ -8,13 +8,13 @@ function App() {
 
   function handleSubmit({ yid, start, stop }: Configuration) {
     setSearchParams({
-      yid: yid || "",
+      v: yid || "",
       start: start || "",
       stop: stop || "",
     });
   }
 
-  const yid = searchParams.get("yid");
+  const yid = searchParams.get("v");
   const start = searchParams.get("start");
   const stop = searchParams.get("stop");
 
@@ -38,9 +38,9 @@ function App() {
       }
 
       <h2>Examples</h2>
-      <a href={`${window.location.origin}/?yid=TDJsjhufD9c&start=5.1&stop=6.8`}>tennis serve</a>
+      <a href={`${window.location.origin}/?v=TDJsjhufD9c&start=5.1&stop=6.8`}>tennis serve</a>
       <br />
-      <a href={`${window.location.origin}/?yid=I9fraQLy5uA&start=24&stop=28`}>guitar solo</a>
+      <a href={`${window.location.origin}/?v=I9fraQLy5uA&start=25.6&stop=27.6`}>guitar solo</a>
     </>
   );
 }
