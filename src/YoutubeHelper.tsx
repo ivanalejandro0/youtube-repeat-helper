@@ -30,33 +30,30 @@ export function YoutubeHelper({ yid, start, stop, rate, onRateChange }: YoutubeH
     player?.seekTo(start);
   }, [player, start])
 
-
-  const scheduleRestart = React.useCallback(() => {
+  function scheduleRestart() {
     if (!player || !stop || ! start) return;
     const end = Math.max(start, player.getCurrentTime());
     const duration = stop - end;
     clearTimeout(tid);
     tid = setTimeout(restartVideoSection, getWaitTimeForRate(duration, playbackRate) * 1000);
-  }, [player, start, stop, restartVideoSection, playbackRate])
+  }
 
-  const handlePause = React.useCallback((event) => {
+  function handlePause(event: { target: YoutubePlayer; data: number }) {
     const player = event.target;
     clearTimeout(tid);
     const pausedTime = player.getCurrentTime().toFixed(3);
     setPaused(pausedTime);
-    return
-  }, [])
+  }
 
-
-  const onPlaybackRateChange = React.useCallback(function onPlaybackRateChange(event: { data: number }) {
+  function onPlaybackRateChange(event: { data: number }) {
     const playbackRate = event.data;
     onRateChange?.(playbackRate);
     setPlaybackRate(playbackRate);
     restartVideoSection();
     scheduleRestart();
-  }, [restartVideoSection, scheduleRestart, onRateChange]);
+  }
 
-  useEffect(() => {
+  useEffect(function handleStartStopChanges() {
     restartVideoSection();
   }, [start, stop, restartVideoSection])
 
@@ -73,7 +70,6 @@ export function YoutubeHelper({ yid, start, stop, rate, onRateChange }: YoutubeH
         onReady={onReady}
         onPlay={scheduleRestart}
         onPause={handlePause}
-        // onStateChange={func}
         onPlaybackRateChange={onPlaybackRateChange}
       />
       { paused && <div>Last paused at: {paused}</div> }
