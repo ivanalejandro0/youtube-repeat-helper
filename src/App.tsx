@@ -3,6 +3,14 @@ import { UserForm, Configuration } from './UserForm';
 // import { useSearchParams } from './use-search-params';
 import { YoutubeHelper } from './YoutubeHelper';
 
+function getBaseUrl(): string {
+  return (
+    window.location.protocol + '//' +
+    window.location.host +
+    window.location.pathname
+  );
+}
+
 function App() {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -59,9 +67,9 @@ function App() {
       }
 
       <h2>Examples</h2>
-      <a href={`${window.location.origin}/?v=TDJsjhufD9c&start=5.1&stop=6.8&rate=0.5`}>tennis serve</a>
+      <a href={`${getBaseUrl()}/?v=TDJsjhufD9c&start=5.1&stop=6.8&rate=0.5`}>tennis serve</a>
       <br />
-      <a href={`${window.location.origin}/?v=I9fraQLy5uA&start=25.6&stop=27.6`}>guitar solo</a>
+      <a href={`${getBaseUrl()}/?v=I9fraQLy5uA&start=25.6&stop=27.6`}>guitar solo</a>
       <br /> <br />
     </>
   );
