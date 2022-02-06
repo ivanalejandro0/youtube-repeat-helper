@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import YouTube from 'react-youtube';
+import YouTube, { Options as YoutubeOptions } from 'react-youtube';
 import { getWaitTimeForRate } from "./rate-delay-adjust";
 
 type YoutubePlayer = ReturnType<YouTube['getInternalPlayer']>;
@@ -62,11 +62,20 @@ export function YoutubeHelper({ yid, start, stop, rate, onRateChange }: YoutubeH
     player.setPlaybackRate(rate);
   }, [player, rate])
 
+  const opts: YoutubeOptions = {
+    // height: '390',
+    // width: '640',
+    playerVars: {
+      autoplay: 0, // not working, for some reason
+    },
+  };
+
   console.log("[render] YoutubeHelper", { yid, start, stop, rate });
   return (
     <>
       <YouTube
         videoId={yid}
+        opts={opts}
         onReady={onReady}
         onPlay={scheduleRestart}
         onPause={handlePause}
