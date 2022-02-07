@@ -63,8 +63,7 @@ export function YoutubeHelper({ yid, start, stop, rate, onRateChange }: YoutubeH
   }, [player, rate])
 
   const opts: YoutubeOptions = {
-    // height: '390',
-    // width: '640',
+    width: '100%',
     playerVars: {
       autoplay: 0, // not working, for some reason
     },
