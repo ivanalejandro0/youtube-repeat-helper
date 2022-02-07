@@ -1,6 +1,5 @@
 import { useSearchParams } from "react-router-dom";
 import { UserForm, Configuration } from './UserForm';
-// import { useSearchParams } from './use-search-params';
 import { YoutubeHelper } from './YoutubeHelper';
 
 function getBaseUrl(): string {
@@ -39,7 +38,7 @@ function App() {
   console.log("[render] App", { yid, start, stop });
 
   return (
-    <>
+    <main className="container">
       <h2>Load your video, configure your section to repeat</h2>
       <p>
         Where do you get the video id?<br />
@@ -50,28 +49,33 @@ function App() {
         {...{ yid, start, stop }}
         onSubmit={handleSubmit}
       />
-      <br />
-      { yid
+      <section>{ yid
         ? (
-        <YoutubeHelper
-          key={yid}
-          {...{
-            yid,
-            start: Number(start),
-            stop: Number(stop),
-            rate: Number(playbackRate),
-            onRateChange: handlePlaybackRateChange,
-          }}
-        />)
-        : <div>No video</div>
-      }
+          <YoutubeHelper
+            key={yid}
+            {...{
+              yid,
+              start: Number(start),
+              stop: Number(stop),
+              rate: Number(playbackRate),
+              onRateChange: handlePlaybackRateChange,
+            }}
+          />)
+          : <div>No video</div>
+      }</section>
 
-      <h2>Examples</h2>
-      <a href={`${getBaseUrl()}/?v=TDJsjhufD9c&start=5.1&stop=6.8&rate=0.5`}>tennis serve</a>
-      <br />
-      <a href={`${getBaseUrl()}/?v=I9fraQLy5uA&start=25.6&stop=27.6`}>guitar solo</a>
-      <br /> <br />
-    </>
+      <section>
+        <h2>Examples</h2>
+        <ul>
+          <li>
+            <a href={`${getBaseUrl()}/?v=TDJsjhufD9c&start=5.1&stop=6.8&rate=0.5`}>tennis serve</a>
+          </li>
+          <li>
+            <a href={`${getBaseUrl()}/?v=I9fraQLy5uA&start=25.6&stop=27.6`}>guitar solo</a>
+          </li>
+        </ul>
+      </section>
+    </main>
   );
 }
 

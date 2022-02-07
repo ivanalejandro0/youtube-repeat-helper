@@ -40,35 +40,30 @@ export function UserForm({ yid, start, stop, onSubmit }: UserFormProps) {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <label>
-          Youtube video id:
-          <input
-            type="text"
-            name="yid"
-            defaultValue={yid || ""}
-          />
-        </label>
-        <br />
-        <label>
-          Video start time:
-          <input
-            type="number"
-            name="start"
-            step="any"
-            defaultValue={start || ""}
-          />
-        </label>
-        <br />
-        <label>
-          Video stop time:
-          <input
-            type="number"
-            name="stop"
-            step="any"
-            defaultValue={stop || ""}
-          />
-        </label>
-        <br />
+        <label htmlFor="yid">Youtube video id:</label>
+        <input
+          type="text"
+          name="yid"
+          defaultValue={yid || ""}
+        />
+        <div className="grid">
+          <label>Video start time:
+            <input
+              type="number"
+              name="start"
+              step="any"
+              defaultValue={start || ""}
+            />
+          </label>
+          <label>Video stop time:
+            <input
+              type="number"
+              name="stop"
+              step="any"
+              defaultValue={stop || ""}
+            />
+          </label>
+        </div>
         <input type="submit" value="Submit" />
       </form>
     </div>
