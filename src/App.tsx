@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router-dom";
+import {ThemeSwitcher} from "./theme-switcher";
 import { UserForm, Configuration } from './UserForm';
 import { YoutubeHelper } from './YoutubeHelper';
 
@@ -39,6 +40,7 @@ function App() {
 
   return (
     <main className="container">
+      <ThemeSwitcher />
       <h2>Load your video, configure your section to repeat</h2>
       <p>
         Where do you get the video id?<br />
