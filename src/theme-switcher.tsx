@@ -37,6 +37,13 @@ function getThemeName(theme: ValidTheme): string {
   return options.get(theme) || "";
 }
 
+function getBaseUrl(): string {
+  return (
+    window.location.protocol + '//' +
+    window.location.host +
+    window.location.pathname
+  );
+}
 
 export function ThemeSwitcher() {
   const [theme, setTheme] = React.useState<ValidTheme>("auto");
@@ -49,7 +56,7 @@ export function ThemeSwitcher() {
   return (
     <nav>
       <ul>
-        <li><strong>Youtube helper</strong></li>
+        <li><strong><a href={getBaseUrl()}>Youtube helper</a></strong></li>
       </ul>
       <ul>
         Theme:

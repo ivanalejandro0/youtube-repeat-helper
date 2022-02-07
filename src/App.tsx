@@ -11,7 +11,7 @@ function getBaseUrl(): string {
   );
 }
 
-function App() {
+export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   function handleSubmit({ yid, start, stop }: Configuration) {
@@ -21,7 +21,7 @@ function App() {
       stop: stop || "",
     });
   }
-  
+
   function handlePlaybackRateChange(rate: number) {
     setSearchParams({
       v: searchParams.get("v") || "",
@@ -41,33 +41,32 @@ function App() {
   return (
     <main className="container">
       <ThemeSwitcher />
-      <h2>Load your video, configure your section to repeat</h2>
+
+      <h2>Your video</h2>
+      <section>
+        { yid
+          ? (
+            <YoutubeHelper
+              key={yid}
+              {...{
+                yid,
+                start: Number(start),
+                stop: Number(stop),
+                rate: Number(playbackRate),
+                onRateChange: handlePlaybackRateChange,
+              }}
+            />)
+            : <div>No video loaded</div>
+        }
+      </section>
+
+      <h2>Load your video</h2>
       <p>
         Where do you get the video id?<br />
-        Example youtube url (video id in red):<br />
-        https://www.youtube.com/watch?v=<span style={{color: "red"}}>TDJsjhufD9cl</span>
-      </p>
-      <UserForm
-        {...{ yid, start, stop }}
-        onSubmit={handleSubmit}
-      />
-      <section>{ yid
-        ? (
-          <YoutubeHelper
-            key={yid}
-            {...{
-              yid,
-              start: Number(start),
-              stop: Number(stop),
-              rate: Number(playbackRate),
-              onRateChange: handlePlaybackRateChange,
-            }}
-          />)
-          : <div>No video</div>
-      }</section>
-
-      <section>
-        <h2>Examples</h2>
+        Example youtube url (video id highlighted):<br />
+        https://www.youtube.com/watch?v=<mark>TDJsjhufD9cl</mark>
+        <br />
+        <strong>Examples:</strong>
         <ul>
           <li>
             <a href={`${getBaseUrl()}/?v=TDJsjhufD9c&start=5.1&stop=6.8&rate=0.5`}>tennis serve</a>
@@ -76,9 +75,12 @@ function App() {
             <a href={`${getBaseUrl()}/?v=I9fraQLy5uA&start=25.6&stop=27.6`}>guitar solo</a>
           </li>
         </ul>
-      </section>
+      </p>
+
+      <UserForm
+        {...{ yid, start, stop }}
+        onSubmit={handleSubmit}
+      />
     </main>
   );
 }
-
-export default App;

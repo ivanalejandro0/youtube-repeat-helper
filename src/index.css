@@ -15,3 +15,8 @@ code {
 button.small {
   padding: 2px 5px;
 }
+
+/* I don't like much spacing below headings  */
+h1, h2, h3, h4, h5 {
+  --typography-spacing-vertical: 0.5rem;
+}
