@@ -41,7 +41,7 @@ export default function App() {
   return (
     <main className="container">
       <ThemeSwitcher />
-
+      <p>This is a simple web that helps you watch part of a Youtube video on repeat.</p>
       <h2>Your video</h2>
       <section>
         { yid
