@@ -41,7 +41,14 @@ export default function App() {
   return (
     <main className="container">
       <ThemeSwitcher />
-      <p>This is a simple web that helps you watch part of a Youtube video on repeat.</p>
+      <p>
+        This is a simple web that helps you watch part of a Youtube video on repeat. For example:&nbsp;
+        <a href={`${getBaseUrl()}/?v=TDJsjhufD9c&start=5.1&stop=6.8&rate=0.5`}>a tennis serve</a>
+        &nbsp;or&nbsp;
+        <a href={`${getBaseUrl()}/?v=I9fraQLy5uA&start=25.6&stop=27.6`}>a guitar solo</a>.
+        <br />
+        Use Youtube controls to adjust speed.
+      </p>
       <h2>Your video</h2>
       <section>
         { yid
@@ -65,16 +72,6 @@ export default function App() {
         Where do you get the video id?<br />
         Example youtube url (video id highlighted):<br />
         https://www.youtube.com/watch?v=<mark>TDJsjhufD9cl</mark>
-        <br />
-        <strong>Examples:</strong>
-        <ul>
-          <li>
-            <a href={`${getBaseUrl()}/?v=TDJsjhufD9c&start=5.1&stop=6.8&rate=0.5`}>tennis serve</a>
-          </li>
-          <li>
-            <a href={`${getBaseUrl()}/?v=I9fraQLy5uA&start=25.6&stop=27.6`}>guitar solo</a>
-          </li>
-        </ul>
       </p>
 
       <UserForm
